@@ -10,6 +10,7 @@ if (process.env.NODE_ENV != "production" && config_result.error) {
 
 //###[ ROUTERS ]###
 const indexRouter = require("../indexRouter");
+const usersRouter = require("./users/users-router");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(
 
 // application routes
 app.use("/", indexRouter);
+app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
