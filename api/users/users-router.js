@@ -5,9 +5,7 @@ const { buildToken } = require("../auth/token-builder");
 
 const Users = require("./users-model");
 const {
-    validateUniqueUsername,
     validateUniqueEmail,
-    validateExistingUsername,
     validateExistingEmail,
 } = require("./user-middleware");
 
@@ -23,7 +21,6 @@ router.get("/", async (req, res, next) => {
 
 router.post(
     "/register",
-    validateUniqueUsername,
     validateUniqueEmail,
     async (req, res, next) => {
         const user = req.body;
@@ -32,8 +29,8 @@ router.post(
         user.password = hash;
 
         try {
-            const newUser = await Users.insertUser(user);
-            res.status(201).json(newUser);
+            await Users.insertUser(user);
+            res.status(201).json({ message: "registration successful" });
         } catch (err) {
             next(err);
         }
@@ -42,7 +39,6 @@ router.post(
 
 router.post(
     "/login",
-    validateExistingUsername,
     validateExistingEmail,
     async (req, res, next) => {
         const { username, password, email } = req.body;
